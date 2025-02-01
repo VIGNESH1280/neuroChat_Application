@@ -1,0 +1,87 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    transition: background 0.5s ease-in-out;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    margin-top: 20px;
+    animation: fadeIn 1s ease-in;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+  }
+  
+  /* Form Styling */
+  form {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    display: inline-block;
+    margin: 10px auto;
+    width: 80%;
+    max-width: 400px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  form:hover {
+    transform: scale(1.05);
+  }
+  
+  input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  button {
+    background: #ff6f61;
+    border: none;
+    padding: 10px 15px;
+    color: white;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  button:hover {
+    background: #de5147;
+    transform: scale(1.1);
+  }
+  
+  /* Messages Styling */
+  div ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 10px;
+    margin: 5px auto;
+    border-radius: 5px;
+    max-width: 80%;
+    text-align: left;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  li:hover {
+    transform: translateX(10px);
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
