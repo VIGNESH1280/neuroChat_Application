@@ -1,4 +1,4 @@
-NeuroChat - Real-Time Chat Application
+NeuroChatApplication - A Real-Time Chat Application
 
 NeuroChat is a feature-rich real-time chat application built using React.js, Socket.io, and Express.js. It enables users to communicate instantly through direct messages and chat rooms, providing a seamless and interactive chatting experience.
 
