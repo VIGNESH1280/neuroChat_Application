@@ -1,86 +1,75 @@
-import React, { useEffect, useMemo, useState } from 'react'
+
+import React, { useEffect, useMemo, useState } from 'react';
 import { io } from 'socket.io-client';
-import './App.css'
+import './App.css';
+
 const App = () => {
   const socket = useMemo(() => io("http://localhost:8080"), []);
-  //socket/client
   const [socketId, setSocketId] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const [room, setRoom] = useState('');     //to a particular person
-
+  const [room, setRoom] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(message);
-    socket.emit("message", message, room);
-    console.log("message sent");
-    setMessage("");
-  }
-
+    if (message.trim()) {
+      socket.emit("message", message, room);
+      setMessage(""); // Clear input without manually adding the message
+    }
+  };
 
   const joinRoom = (e) => {
     e.preventDefault();
-    console.log(`Joined group: ${room}`);
-    socket.emit("join-room", room);
-  }
-
-
+    if (room.trim()) {
+      socket.emit("join-room", room);
+    }
+  };
 
   useEffect(() => {
     socket.on("connect", () => {
       setSocketId(socket.id);
       console.log(`Connected: ${socket.id}`);
+    });
 
-      socket.on("forward-message", (data) => {
-        console.log(data);
-        setMessages((prevMessages) => [...prevMessages, data]);
-      })
-    })
+    socket.on("forward-message", (data) => {
+      console.log("Received message:", data);
+      setMessages((prevMessages) => [...prevMessages, data]);
+    });
+
+    socket.on("previous-messages", (data) => {
+      console.log("Old messages:", data);
+      setMessages(data);
+    });
 
     return () => {
       socket.disconnect();
-    }
-  }, [])
-
+    };
+  }, []);
 
   return (
     <div>
       <h1>Welcome to NeuroChat Application</h1>
       <h3>Socket ID: {socketId}</h3>
-
-      {/* From to send a message to a particular person */}
       <form onSubmit={handleSubmit}>
-        <input value={message} placeholder='Enter your text to send...' onChange={(e) => { setMessage(e.target.value) }} />
-        <input placeholder='Enter the User/Room Id: ' onChange={(e) => { setRoom(e.target.value) }} />
+        <input value={message} placeholder='Enter message...' onChange={(e) => setMessage(e.target.value)} />
+        <input placeholder='Enter Room ID' onChange={(e) => setRoom(e.target.value)} />
         <button type='submit'>SEND</button>
       </form>
-
-
-      {/* Form to create a group and send a message in the group */}
       <form onSubmit={joinRoom}>
-        <input value={room} placeholder='Enter the Room Name: ' onChange={(e) => { setRoom(e.target.value) }} />
+        <input value={room} placeholder='Enter Room Name' onChange={(e) => setRoom(e.target.value)} />
         <button type='submit'>JOIN ROOM</button>
       </form>
-
       <div>
         <ul>
-          {messages.map((item, index) => {
-            return <li key={index}>{item}</li>
-          })}
+          {messages.map((item, index) => (
+            <li key={index}>
+              <strong>{item.sender === socketId ? "You" : "Sender"}:</strong> {item.text || "No message"}
+            </li>
+          ))}
         </ul>
       </div>
-
-
-
-
-
-
-
-
-
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
